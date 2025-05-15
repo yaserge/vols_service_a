@@ -22,11 +22,12 @@ app.state.config = {
 app.include_router(thermograms.router)
 app.include_router(masks.router)
 
+
 @app.on_event("startup")
 async def startup_event():
     """Запускаем мониторинг папки при старте приложения"""
     loop = asyncio.get_running_loop()
-    
+
     start_monitoring(
         monitoring_dir=app.state.config["monitoring_dir"],
         hot_th=app.state.config["hot_threshold"],
@@ -34,14 +35,17 @@ async def startup_event():
         loop=loop
     )
 
+
 @app.on_event("shutdown")
 async def shutdown_event():
     """Останавливаем мониторинг при завершении работы"""
     stop_monitoring()
 
+
 @app.on_event("startup")
 async def startup_db_client():
     await mongodb.connect()
+
 
 # @app.on_event("shutdown")
 # async def shutdown_db_client():
