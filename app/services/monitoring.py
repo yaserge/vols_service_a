@@ -8,7 +8,8 @@ from app.workers.ReaderThermogram import ReaderThermogram
 _observer: Optional[Observer] = None
 event_handler = None
 
-def start_monitoring(monitoring_dir: Path, thresholds: dict, area_config:dict, loop):
+
+def start_monitoring(monitoring_dir: Path, area_config:dict, loop):
     """Запуск мониторинга папки"""
     global _observer
     global event_handler 
@@ -16,7 +17,7 @@ def start_monitoring(monitoring_dir: Path, thresholds: dict, area_config:dict, l
     if not monitoring_dir.exists():
         monitoring_dir.mkdir(parents=True, exist_ok=True)
     
-    detector = Detector(thresholds, area_config)
+    detector = Detector(area_config)
     reader = ReaderThermogram()
     
     event_handler = NewFileHandler(monitoring_dir, reader, detector, loop)

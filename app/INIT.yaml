@@ -5,12 +5,6 @@
 ## утечка холодной воды
 #cold_threshold: 14
 
-thresholds: {
-  'hot_leak': 45.0,
-  'cold_leak': 25.0,
-}
-
-
 area_config: {
   'hot_leak': {
     'threshold':26.0,
@@ -26,14 +20,13 @@ area_config: {
       (0,10000),
     ],
   },
-
-#   'power_line_heat': {
-#    'threshold':25.0,
-#    'threshold_direction_is_up': True,
-#    'ranges': [
-#      (0,10000),
-#    ],
-#  },
+   'power_line_heat': {
+    'threshold':25.0,
+    'threshold_direction_is_up': True,
+    'ranges': [
+      (0,10000), # TODO: edit
+    ],
+  },
 
 
    'radiator_switch': {
@@ -69,14 +62,14 @@ area_config: {
       (515, 555),
     ],
   },
-#   'window': {
-#    'threshold':25.0, # unknown
-#    'threshold_direction_is_up': True,
-#    'ranges': [
-#     (49, 54),
-#     (36, 41),
-#    ],
-#  },
+   'window': {
+    'threshold':25.0, # TODO: edit
+    'threshold_direction_is_up': True,
+    'ranges': [
+     (49, 54),
+     (36, 41),
+    ],
+  },
    'rack_temperature': {
     'threshold':25.0,
     'threshold_direction_is_up': True,
