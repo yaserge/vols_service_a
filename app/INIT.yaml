@@ -5,26 +5,28 @@
 ## утечка холодной воды
 #cold_threshold: 14
 
+# Right range meter is included
+
 area_config: {
   'hot_leak': {
     'threshold':26.0,
     'threshold_direction_sign': 1,
     'ranges': [
-      (0,10000),
+      [0,10000],
     ],
   },
   'cold_leak': {
     'threshold':15.0,
     'threshold_direction_sign': -1,
     'ranges': [
-      (0,10000),
+      [0,10000],
     ],
   },
    'power_line_heat': {
     'threshold':25.0,
     'threshold_direction_sign': 1,
     'ranges': [
-      (0,10000), # TODO: edit
+      [0,10000], # TODO: edit
     ],
   },
 
@@ -33,66 +35,66 @@ area_config: {
     'threshold':22.0,
     'threshold_direction_sign': 1,
     'ranges': [
-      (216, 222),
-      (234, 241),
+      [216, 222],
+      [234, 241],
     ],
   },
    'conditioner_switch': {
     'threshold':25.0,
     'threshold_direction_sign': 1,
     'ranges': [
-      (18, 20),
-      (225, 230),
-      (273, 276),
-      (327, 331),
-      (431, 433),
-      (570, 573),
-      (557, 560)
+      [18, 20],
+      [225, 230],
+      [273, 276],
+      [327, 331],
+      [431, 433],
+      [570, 573],
+      [557, 560]
     ],
   },
    'light_switch': {
     'threshold':24.0,
     'threshold_direction_sign': 1,
     'ranges': [
-      (12, 68),
-      (245, 269),
-      (333, 357),
-      (424, 444),
-      (565, 589),
-      (515, 555),
+      [12, 68],
+      [245, 269],
+      [333, 357],
+      [424, 444],
+      [565, 589],
+      [515, 555],
     ],
   },
    'window': {
     'threshold':25.0, # TODO: edit
     'threshold_direction_sign': 1,
     'ranges': [
-     (49, 54),
-     (36, 41),
+     [49, 54],
+     [36, 41],
     ],
   },
    'rack_temperature': {
     'threshold':25.0,
     'threshold_direction_sign': 1,
     'ranges': [
-      (156, 170),
-      (175, 188),
-      (194, 208),
-      (131, 148),
-      (118, 128),]
+      [156, 170],
+      [175, 188],
+      [194, 208],
+      [131, 148],
+      [118, 128],]
   },
    'climatic_chamber_temperature': {
     'threshold':23.0,
     'threshold_direction_sign': 1,
     'ranges': [
-      (276, 283),
+      [276, 283],
     ]
   },
    'office_fire': {
     'threshold':30.0,
     'threshold_direction_sign': 1,
     'ranges': [
-      (0, 380),
-      (402, 10000),
+      [0, 380],
+      [402, 10000],
     ],
   },
 
@@ -101,7 +103,7 @@ area_config: {
     'threshold':30.0,
     'threshold_direction_sign': 1,
     'ranges': [
-      (0,10000),
+      [0,10000],
     ],
   },
 }
