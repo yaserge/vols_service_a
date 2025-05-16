@@ -48,6 +48,7 @@ class NewFileHandler(FileSystemEventHandler):
                 + event_stop,  # 0 - ничего не произошло, 1 - утечка прошла, 2 - утечка началась
                 length=thermo.length,
                 date_time=thermo.date_time,
+                named_dict=thresholds,
             )
 
             await mongodb.save_thermogram(thermo)

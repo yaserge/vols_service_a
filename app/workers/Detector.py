@@ -8,8 +8,15 @@ class Detector:
                  area_config: dict,
                  # hot_th: float, cold_th: float
                  ) -> None:
-        self.thresholds = thresholds
         self.area_config = area_config
+        self.thresholds = {
+            area_name: area_config[area_name]['threshold']
+            for area_name in area_config.keys()
+        }
+        self.threshold_direction_is_up = {
+            area_name: area_config[area_name]['threshold_direction_is_up']
+            for area_name in area_config.keys()
+        }
 
         self.current_event_mask = None
         self.prev_event_mask = None
