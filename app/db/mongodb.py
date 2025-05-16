@@ -22,6 +22,7 @@ class MongoDB:
         self.client = None
         self.db = None
         self.thresholds = ParserInitFile(Path("INIT.yaml")).get_event_thresholds()
+        self.area_config = ParserInitFile(Path("INIT.yaml")).get_area_config()
 
     async def connect(self):
         self.client = AsyncIOMotorClient(os.getenv("MONGODB_URL"))

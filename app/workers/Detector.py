@@ -5,9 +5,11 @@ from typing import Dict
 class Detector:
     def __init__(self,
                  thresholds: Dict[str, float],
+                 area_config: dict,
                  # hot_th: float, cold_th: float
                  ) -> None:
         self.thresholds = thresholds
+        self.area_config = area_config
 
         self.current_event_mask = None
         self.prev_event_mask = None

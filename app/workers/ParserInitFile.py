@@ -9,5 +9,8 @@ class ParserInitFile:
     def get_event_thresholds(self) -> dict:
         return dict(yaml.load(self.init_file.open("r"), Loader=yaml.Loader)["thresholds"])
 
+    def get_area_config(self) -> dict:
+        return dict(yaml.load(self.init_file.open("r"), Loader=yaml.Loader)["area_config"])
+
     def get_monitoring_path(self) -> Path:
         return Path(yaml.load(self.init_file.open("r"), Loader=yaml.Loader)["path"])

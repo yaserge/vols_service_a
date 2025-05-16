@@ -16,6 +16,7 @@ init_parser = ParserInitFile(Path("INIT.yaml"))
 app.state.config = {
     "monitoring_dir": init_parser.get_monitoring_path(),
     "thresholds": init_parser.get_event_thresholds(),
+    "area_config": init_parser.get_area_config(),
 }
 
 app.include_router(thermograms.router)
@@ -30,6 +31,7 @@ async def startup_event():
     start_monitoring(
         monitoring_dir=app.state.config["monitoring_dir"],
         thresholds=app.state.config["thresholds"],
+        area_config=app.state.config["area_config"],
         loop=loop
     )
 
