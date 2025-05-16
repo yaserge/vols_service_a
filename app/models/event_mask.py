@@ -5,9 +5,23 @@ from typing import Optional
 
 import numpy as np
 from bson import Binary, ObjectId
+from itertools import groupby
 from pydantic import BaseModel, ConfigDict, Field
 from pydantic.json_schema import JsonSchemaValue
 from pydantic_core import core_schema
+
+
+def collapse_events_row(row):
+    groups = [list(g) for _, g in groupby(row)]
+    output_vector = [sum(1 for x in groups[:i] for _ in x) + len(x) // 2 for i, x in enumerate(groups)]
+    collapsed_row_mask = np.zeros_like(row)
+    np.put(collapsed_row_mask, output_vector, 1)
+    return row * collapsed_row_mask
+
+
+def collapse_events(arr):
+    return np.apply_along_axis(collapse_events_row, 1, arr)
+
 
 @dataclass
 class EventMask:
@@ -58,11 +72,11 @@ class EventMask:
             date_time=data["date_time"],
         )
 
-
     @classmethod
     def expanded_from_dict(cls, data: dict, named_dict: dict,) -> dict:
         """Создание объекта из данных MongoDB"""
         event_arr = pickle.loads(data["event"])
+        event_arr = collapse_events(event_arr)
         print(event_arr.shape)
         return_dict = dict(
             # event=pickle.loads(data["event"]).tolist(),
