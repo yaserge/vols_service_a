@@ -8,21 +8,21 @@
 area_config: {
   'hot_leak': {
     'threshold':26.0,
-    'threshold_direction_is_up': True,
+    'threshold_direction_sign': 1,
     'ranges': [
       (0,10000),
     ],
   },
   'cold_leak': {
     'threshold':15.0,
-    'threshold_direction_is_up': False,
+    'threshold_direction_sign': -1,
     'ranges': [
       (0,10000),
     ],
   },
    'power_line_heat': {
     'threshold':25.0,
-    'threshold_direction_is_up': True,
+    'threshold_direction_sign': 1,
     'ranges': [
       (0,10000), # TODO: edit
     ],
@@ -31,7 +31,7 @@ area_config: {
 
    'radiator_switch': {
     'threshold':22.0,
-    'threshold_direction_is_up': True,
+    'threshold_direction_sign': 1,
     'ranges': [
       (216, 222),
       (234, 241),
@@ -39,7 +39,7 @@ area_config: {
   },
    'conditioner_switch': {
     'threshold':25.0,
-    'threshold_direction_is_up': True,
+    'threshold_direction_sign': 1,
     'ranges': [
       (18, 20),
       (225, 230),
@@ -52,7 +52,7 @@ area_config: {
   },
    'light_switch': {
     'threshold':24.0,
-    'threshold_direction_is_up': True,
+    'threshold_direction_sign': 1,
     'ranges': [
       (12, 68),
       (245, 269),
@@ -64,7 +64,7 @@ area_config: {
   },
    'window': {
     'threshold':25.0, # TODO: edit
-    'threshold_direction_is_up': True,
+    'threshold_direction_sign': 1,
     'ranges': [
      (49, 54),
      (36, 41),
@@ -72,7 +72,7 @@ area_config: {
   },
    'rack_temperature': {
     'threshold':25.0,
-    'threshold_direction_is_up': True,
+    'threshold_direction_sign': 1,
     'ranges': [
       (156, 170),
       (175, 188),
@@ -82,14 +82,14 @@ area_config: {
   },
    'climatic_chamber_temperature': {
     'threshold':23.0,
-    'threshold_direction_is_up': True,
+    'threshold_direction_sign': 1,
     'ranges': [
       (276, 283),
     ]
   },
    'office_fire': {
     'threshold':30.0,
-    'threshold_direction_is_up': True,
+    'threshold_direction_sign': 1,
     'ranges': [
       (0, 380),
       (402, 10000),
@@ -99,7 +99,7 @@ area_config: {
 
    'parking_fire': {
     'threshold':30.0,
-    'threshold_direction_is_up': True,
+    'threshold_direction_sign': 1,
     'ranges': [
       (0,10000),
     ],

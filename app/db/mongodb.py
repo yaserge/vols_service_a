@@ -26,8 +26,8 @@ class MongoDB:
             area_name: self.area_config[area_name]['threshold']
             for area_name in self.area_config.keys()
         }
-        self.threshold_direction_is_up = {
-            area_name: self.area_config[area_name]['threshold_direction_is_up']
+        self.threshold_direction_sign = {
+            area_name: self.area_config[area_name]['threshold_direction_sign']
             for area_name in self.area_config.keys()
         }
 

@@ -12,8 +12,8 @@ class Detector:
             area_name: area_config[area_name]['threshold']
             for area_name in area_config.keys()
         }
-        self.threshold_direction_is_up = {
-            area_name: area_config[area_name]['threshold_direction_is_up']
+        self.threshold_direction_sign = {
+            area_name: area_config[area_name]['threshold_direction_sign']
             for area_name in area_config.keys()
         }
 
@@ -26,7 +26,15 @@ class Detector:
         if self.current_event_mask is not None:
             self.prev_event_mask = self.current_event_mask
         print(f"thermogram.thermogram shape: {thermogram.thermogram.shape}")
-        self.current_event_mask = thermogram.thermogram > np.array(list(self.thresholds.values()))[:, np.newaxis]
+        self.current_event_mask = (
+            (thermogram.thermogram
+             * np.array(list(self.threshold_direction_sign.values()))[:, np.newaxis]
+             ) > (
+                np.array(list(self.thresholds.values()))[:, np.newaxis]
+                * np.array(list(self.threshold_direction_sign.values()))[:, np.newaxis]
+            )
+        )
+
         print(f"self.current_event_mask shape: {self.current_event_mask.shape}")
 
     def get_event_start(self) -> np.ndarray:
