@@ -15,8 +15,7 @@ init_parser = ParserInitFile(Path("INIT.yaml"))
 
 app.state.config = {
     "monitoring_dir": init_parser.get_monitoring_path(),
-    "hot_threshold": init_parser.get_hot_th(),
-    "cold_threshold": init_parser.get_cold_th()
+    "thresholds": init_parser.get_event_thresholds(),
 }
 
 app.include_router(thermograms.router)
@@ -27,13 +26,14 @@ app.include_router(masks.router)
 async def startup_event():
     """Запускаем мониторинг папки при старте приложения"""
     loop = asyncio.get_running_loop()
-
+    print("""Запускаем мониторинг папки при старте приложения""")
     start_monitoring(
         monitoring_dir=app.state.config["monitoring_dir"],
-        hot_th=app.state.config["hot_threshold"],
-        cold_th=app.state.config["cold_threshold"],
+        thresholds=app.state.config["thresholds"],
         loop=loop
     )
+
+    print("""Запущен мониторинг папки при старте приложения""")
 
 
 @app.on_event("shutdown")

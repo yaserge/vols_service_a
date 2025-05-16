@@ -1,14 +1,18 @@
 import os
 from datetime import datetime
 from typing import List, Optional
+from pathlib import Path
+
 
 from bson import ObjectId
 from dotenv import load_dotenv
 from motor.motor_asyncio import AsyncIOMotorClient
 from pymongo import ASCENDING, DESCENDING
 
-from app.models.mask import Mask
+from app.models.event_mask import EventMask
 from app.models.thermogram import Thermogram
+from app.workers.ParserInitFile import ParserInitFile
+from app.dependencies import get_config_parser
 
 load_dotenv()
 
@@ -17,6 +21,7 @@ class MongoDB:
     def __init__(self):
         self.client = None
         self.db = None
+        self.thresholds = ParserInitFile(Path("INIT.yaml")).get_event_thresholds()
 
     async def connect(self):
         self.client = AsyncIOMotorClient(os.getenv("MONGODB_URL"))
@@ -66,18 +71,24 @@ class MongoDB:
 
         return [doc["date_time"] async for doc in cursor]
 
-    async def save_mask(self, mask: Mask) -> None:
+    async def save_mask(self, mask: EventMask) -> None:
         """Сохраняет маску в БД, возвращает ID"""
         data = mask.to_dict()
         await self.db.masks.replace_one({"date_time": data["date_time"]}, data, upsert=True)
         print("сохранил маску")
 
-    async def get_mask(self, mask_id: str) -> Optional[Mask]:
+    async def save_expanded_mask(self, mask: EventMask) -> None:
+        """Сохраняет маску в БД, возвращает ID"""
+        data = mask.to_dict()
+        await self.db.masks.replace_one({"date_time": data["date_time"]}, data, upsert=True)
+        print("сохранил маску")
+
+    async def get_mask(self, mask_id: str) -> Optional[EventMask]:
         """Загружает маску по ID"""
         data = await self.db.masks.find_one({"_id": ObjectId(mask_id)})
-        return Mask.from_dict(data) if data else None
+        return EventMask.expanded_from_dict(data, self.thresholds) if data else None
 
-    async def get_closest_mask(self, target_time: datetime) -> Optional[Mask]:
+    async def get_closest_mask(self, target_time: datetime) -> Optional[EventMask]:
         """
         Находит термограмму, ближайшую к указанному времени
         Возвращает ThermogramInDB с бинарными данными
@@ -96,7 +107,8 @@ class MongoDB:
             closest = prev_thermo if prev_diff < next_diff else next_thermo
         else:
             closest = prev_thermo or next_thermo
-        return Mask.from_dict(closest)
+
+        return EventMask.expanded_from_dict(closest, self.thresholds)
 
     async def get_all_mask_times(self) -> List[datetime]:
         """

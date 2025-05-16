@@ -28,14 +28,21 @@ async def get_all_thermogram_times():
     return await mongodb.get_all_thermogram_times()
 
 
-@router.put("/hot_th")
-async def update_hot_th(value: ValueUpdate):
-    print(monitor.event_handler)
-    monitor.event_handler.detector.hot_th = value.value
-    return {"message": "Hot treshold is updated", "new_value": value.value}
+# TODO: redo
+@router.put("/thresholds")
+async def update_threshold(value: ValueUpdate):
+    monitor.event_handler.detector.threshold = value.value
+    return {"message": "Threshold is updated", "new_value": value.value}
 
 
-@router.put("/cold_th")
-async def update_cold_th(value: ValueUpdate):
-    monitor.event_handler.detector.cold_th = value.value
-    return {"message": "Cold treshold is updated", "new_value": value.value}
+# @router.put("/hot_th")
+# async def update_hot_th(value: ValueUpdate):
+#     print(monitor.event_handler)
+#     monitor.event_handler.detector.hot_th = value.value
+#     return {"message": "Hot threshold is updated", "new_value": value.value}
+#
+#
+# @router.put("/cold_th")
+# async def update_cold_th(value: ValueUpdate):
+#     monitor.event_handler.detector.cold_th = value.value
+#     return {"message": "Cold threshold is updated", "new_value": value.value}

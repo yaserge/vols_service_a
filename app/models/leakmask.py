@@ -11,7 +11,7 @@ from pydantic_core import core_schema
 
 
 @dataclass
-class Mask:
+class LeakMask:
     hot_leak: np.ndarray
     cold_leak: np.ndarray
     length: np.ndarray
@@ -43,7 +43,7 @@ class Mask:
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> "Mask":
+    def from_dict(cls, data: dict) -> "LeakMask":
         """Создание объекта из данных MongoDB"""
         return dict(
             hot_leak=pickle.loads(data["hot_leak"]).tolist(),
@@ -53,7 +53,7 @@ class Mask:
         )
 
 
-class MaskInDB(BaseModel):
+class LeakMaskInDB(BaseModel):
     id: str = Field(..., alias="_id")
     hot_leak: bytes
     cold_leak: bytes

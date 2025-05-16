@@ -4,7 +4,7 @@ from datetime import datetime
 from pathlib import Path
 
 from app.db.mongodb import mongodb
-from app.models.mask import Mask
+from app.models.event_mask import EventMask
 from app.routes.notifications import manager
 from app.workers.Detector import Detector
 from app.workers.ReaderThermogram import ReaderThermogram
@@ -28,7 +28,7 @@ class NewFileHandler(FileSystemEventHandler):
             asyncio.run_coroutine_threadsafe(self.process_file(path), self.loop)
 
     @staticmethod
-    async def send_leak_event(event_type: str, length: float, time: str):
+    async def send_event(event_type: str, length: float, time: str):
         await manager.broadcast(json.dumps({"event": event_type, "length": length, "time": time}))
 
     async def process_file(self, path):
@@ -36,19 +36,16 @@ class NewFileHandler(FileSystemEventHandler):
 
         try:
             thermo = self.reader.read_data(path)
-            self.detector.detect_hot_leak(thermo)
-            self.detector.detect_cold_leak(thermo)
+            self.detector.detect_event(thermo)
 
-            hot_leak_start = self.detector.get_hot_leak_start()
-            hot_leak_stop = self.detector.get_hot_leak_stop()
+            event_start = self.detector.get_event_start()
+            event_stop = self.detector.get_event_stop()
+            thresholds = self.detector.thresholds
 
-            cold_leak_start = self.detector.get_cold_leak_start()
-            cold_leak_stop = self.detector.get_cold_leak_stop()
 
-            mask = Mask(
-                hot_leak=hot_leak_start * 2
-                + hot_leak_stop,  # 0 - ничего не произошло, 1 - утечка прошла, 2 - утечка началась
-                cold_leak=cold_leak_start * 2 + cold_leak_stop,
+            mask = EventMask(
+                event=event_start * 2
+                + event_stop,  # 0 - ничего не произошло, 1 - утечка прошла, 2 - утечка началась
                 length=thermo.length,
                 date_time=thermo.date_time,
             )
@@ -58,27 +55,25 @@ class NewFileHandler(FileSystemEventHandler):
             print("Файл обработан")
 
             for i, length in enumerate(thermo.thermogram):
-                hot_code = hot_leak_start[i] * 2 + hot_leak_stop[i]
-                cold_code = cold_leak_start[i] * 2 + cold_leak_stop[i]
+                event_code = event_start[i] * 2 + event_stop[i]
 
-                event_map = {1: "hot_leak_stop", 2: "hot_leak_start"}
+                event_map = {1: "event_stop", 2: "event_start"}
 
-                if hot_code in event_map:
-                    await self.send_leak_event(
-                        event_map[hot_code],
+                if event_code in event_map:
+                    await self.send_event(
+                        # TODO: maybe separate?
+                        event_map[event_code],
                         thermo.length[i],
                         datetime.strftime(thermo.date_time, "%Y-%m-%d %H:%M:%S.%f"),
                     )
                     continue  # исключаем возможность двойной отправки события
 
-                event_map = {1: "cold_leak_stop", 2: "cold_leak_start"}
-
-                if cold_code in event_map:
-                    await self.send_leak_event(
-                        event_map[cold_code],
-                        thermo.length[i],
-                        datetime.strftime(thermo.date_time, "%Y-%m-%d %H:%M:%S.%f"),
-                    )
+                # if cold_code in event_map:
+                #     await self.send_event(
+                #         event_map[cold_code],
+                #         thermo.length[i],
+                #         datetime.strftime(thermo.date_time, "%Y-%m-%d %H:%M:%S.%f"),
+                #     )
 
         except Exception as e:
             await manager.broadcast(json.dumps({"event": "error", "message": str(e)}))

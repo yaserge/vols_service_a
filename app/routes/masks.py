@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, Request, Query
 from pathlib import Path
 from typing import List
-from app.models.mask import Mask
+from app.models.event_mask import EventMask
 from app.db.mongodb import mongodb
 
 from datetime import datetime
