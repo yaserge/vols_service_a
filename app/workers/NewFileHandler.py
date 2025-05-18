@@ -67,18 +67,18 @@ class NewFileHandler(FileSystemEventHandler):
             for name, row in zip(thresholds.keys(), list(event_stop)):
                 for value, center in get_centers_of_sequence(row):
                     if value != 0:
-                        print(f"event {name} ended on {center}m at {thermo.date_time}")
+                        print(f"event {name} ended on {thermo.length[center]}m at {thermo.date_time}")
 
             for name, row in zip(thresholds.keys(), list(event_start)):
                 for value, center in get_centers_of_sequence(row):
                     if value != 0:
-                        print(f"event {name} started on {center}m at {thermo.date_time}")
+                        print(f"event {name} started on {thermo.length[center]}m at {thermo.date_time}")
                         with open("event_output_path.txt", "a") as f:
                             # f.write(f"{name}")
                             if name == 'cold_leak':
-                                f.write(f"{thermo.date_time}, {center}, 1\n")
+                                f.write(f"{thermo.date_time}, {thermo.length[center]}, 1\n")
                             if name == 'hot_leak':
-                                f.write(f"{thermo.date_time}, {center}, 2\n")
+                                f.write(f"{thermo.date_time}, {thermo.length[center]}, 2\n")
 
             for i, length in enumerate(thermo.thermogram):
                 event_code = event_start[i] * 2 + event_stop[i]
