@@ -85,12 +85,6 @@ class MongoDB:
         await self.db.masks.replace_one({"date_time": data["date_time"]}, data, upsert=True)
         print("сохранил маску")
 
-    async def save_expanded_mask(self, mask: EventMask) -> None:
-        """Сохраняет маску в БД, возвращает ID"""
-        data = mask.to_dict()
-        await self.db.masks.replace_one({"date_time": data["date_time"]}, data, upsert=True)
-        print("сохранил маску")
-
     async def get_mask(self, mask_id: str) -> Optional[EventMask]:
         """Загружает маску по ID"""
         data = await self.db.masks.find_one({"_id": ObjectId(mask_id)})

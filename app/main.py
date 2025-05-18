@@ -15,6 +15,7 @@ init_parser = ParserInitFile(Path("INIT.yaml"))
 
 app.state.config = {
     "monitoring_dir": init_parser.get_monitoring_path(),
+    # "event_output_path": init_parser.get_event_output_path(),
     "area_config": init_parser.get_area_config(),
 }
 

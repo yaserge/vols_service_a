@@ -10,3 +10,6 @@ class ParserInitFile:
 
     def get_monitoring_path(self) -> Path:
         return Path(yaml.load(self.init_file.open("r"), Loader=yaml.Loader)["path"])
+
+    def get_event_output_path(self) -> Path:
+        return Path(yaml.load(self.init_file.open("r"), Loader=yaml.Loader)["event_output_path"])

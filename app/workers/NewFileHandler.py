@@ -2,6 +2,8 @@ import asyncio
 import json
 from datetime import datetime
 from pathlib import Path
+from itertools import groupby
+
 
 from app.db.mongodb import mongodb
 from app.models.event_mask import EventMask
@@ -10,6 +12,13 @@ from app.workers.Detector import Detector
 from app.workers.ReaderThermogram import ReaderThermogram
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
+from app.models.event_mask import collapse_events
+
+
+def get_centers_of_sequence(a):
+    groups = [list(g) for _, g in groupby(a)]
+    output_vector = [(x[0], sum(1 for x in groups[:i] for _ in x) + len(x) // 2) for i, x in enumerate(groups)]
+    return output_vector
 
 
 class NewFileHandler(FileSystemEventHandler):
@@ -54,6 +63,22 @@ class NewFileHandler(FileSystemEventHandler):
             await mongodb.save_thermogram(thermo)
             await mongodb.save_mask(mask)
             print("Файл обработан")
+
+            for name, row in zip(thresholds.keys(), list(event_stop)):
+                for value, center in get_centers_of_sequence(row):
+                    if value != 0:
+                        print(f"event {name} ended on {center}m at {thermo.date_time}")
+
+            for name, row in zip(thresholds.keys(), list(event_start)):
+                for value, center in get_centers_of_sequence(row):
+                    if value != 0:
+                        print(f"event {name} started on {center}m at {thermo.date_time}")
+                        with open("event_output_path.txt", "a") as f:
+                            # f.write(f"{name}")
+                            if name == 'cold_leak':
+                                f.write(f"{thermo.date_time}, {center}, 1\n")
+                            if name == 'hot_leak':
+                                f.write(f"{thermo.date_time}, {center}, 2\n")
 
             for i, length in enumerate(thermo.thermogram):
                 event_code = event_start[i] * 2 + event_stop[i]

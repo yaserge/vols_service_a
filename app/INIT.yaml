@@ -12,21 +12,21 @@ area_config: {
     'threshold':26.0,
     'threshold_direction_sign': 1,
     'ranges': [
-      [0,10000],
+      [18,267], # TODO: edit
     ],
   },
   'cold_leak': {
     'threshold':15.0,
     'threshold_direction_sign': -1,
     'ranges': [
-      [0,10000],
+      [18,267], # TODO: edit
     ],
   },
    'power_line_heat': {
     'threshold':25.0,
     'threshold_direction_sign': 1,
     'ranges': [
-      [0,10000], # TODO: edit
+      [267,290.5], # TODO: edit
     ],
   },
 
@@ -40,8 +40,8 @@ area_config: {
     ],
   },
    'conditioner_switch': {
-    'threshold':25.0,
-    'threshold_direction_sign': 1,
+    'threshold':18.0,
+    'threshold_direction_sign': -1,
     'ranges': [
       [18, 20],
       [225, 230],
@@ -53,7 +53,7 @@ area_config: {
     ],
   },
    'light_switch': {
-    'threshold':24.0,
+    'threshold':23.0,
     'threshold_direction_sign': 1,
     'ranges': [
       [12, 68],
@@ -73,7 +73,7 @@ area_config: {
     ],
   },
    'rack_temperature': {
-    'threshold':25.0,
+    'threshold':30.0,
     'threshold_direction_sign': 1,
     'ranges': [
       [156, 170],
@@ -83,7 +83,7 @@ area_config: {
       [118, 128],]
   },
    'climatic_chamber_temperature': {
-    'threshold':23.0,
+    'threshold':30.0,
     'threshold_direction_sign': 1,
     'ranges': [
       [276, 283],
@@ -110,3 +110,6 @@ area_config: {
 
 # Путь, где будут появляться термограммы
 path: "/Users/ssyak/PycharmProjects/therms"
+
+## Путь, где будут появляться термограммы
+#event_output_path: "/Users/ssyak/PycharmProjects/event_output_path.csv"

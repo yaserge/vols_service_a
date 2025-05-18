@@ -77,15 +77,15 @@ class EventMask:
         """Создание объекта из данных MongoDB"""
         event_arr = pickle.loads(data["event"])
         event_arr = collapse_events(event_arr)
-        print(event_arr.shape)
+        # print(event_arr.shape)
         return_dict = dict(
             # event=pickle.loads(data["event"]).tolist(),
             length=pickle.loads(data["length"]).tolist(),
             date_time=data["date_time"],
         )
-        print(named_dict.keys())
-        print(list(event_arr))
-        print(event_arr.tolist())
+        # print(named_dict.keys())
+        # print(list(event_arr))
+        # print(event_arr.tolist())
         return_dict.update({event_name: event_mask for event_name, event_mask in zip(
             named_dict.keys(),
             # event_arr

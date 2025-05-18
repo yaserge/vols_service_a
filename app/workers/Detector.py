@@ -49,7 +49,7 @@ class Detector:
         print("starting detect_event")
         if self.current_event_mask is not None:
             self.prev_event_mask = self.current_event_mask
-        print(f"thermogram.thermogram shape: {thermogram.thermogram.shape}")
+        # print(f"thermogram.thermogram shape: {thermogram.thermogram.shape}")
 
         self.current_event_mask = ((
             (thermogram.thermogram
@@ -59,13 +59,13 @@ class Detector:
                 * np.array(list(self.threshold_direction_sign.values()))[:, np.newaxis]
             )
         ))
-        print(f"self.current_event_mask shape: {self.current_event_mask.shape}")
+        # print(f"self.current_event_mask shape: {self.current_event_mask.shape}")
 
         ranges_mask = create_ranges_mask(thermogram.length, self.ranges)
-        print(f"ranges_mask shape: {ranges_mask.shape}")
+        # print(f"ranges_mask shape: {ranges_mask.shape}")
 
         self.current_event_mask = self.current_event_mask * ranges_mask
-        print(f"self.current_event_mask shape: {self.current_event_mask.shape}")
+        # print(f"self.current_event_mask shape: {self.current_event_mask.shape}")
 
     def get_event_start(self) -> np.ndarray:
         if self.prev_event_mask is None:
