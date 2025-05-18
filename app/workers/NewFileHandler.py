@@ -45,12 +45,15 @@ class NewFileHandler(FileSystemEventHandler):
 
         try:
             thermo = self.reader.read_data(path)
+            print("Термограмма загружена")
+
             self.detector.detect_event(thermo)
 
             event_start = self.detector.get_event_start()
             event_stop = self.detector.get_event_stop()
             thresholds = self.detector.thresholds
 
+            print("Файл обрабатывается")
 
             mask = EventMask(
                 event=event_start * 2
@@ -59,8 +62,11 @@ class NewFileHandler(FileSystemEventHandler):
                 date_time=thermo.date_time,
                 named_dict=thresholds,
             )
+            print("Маска посчитана")
+
 
             await mongodb.save_thermogram(thermo)
+            print("Термограмма сохранена")
             await mongodb.save_mask(mask)
             print("Файл обработан")
 

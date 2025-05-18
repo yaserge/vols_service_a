@@ -49,6 +49,8 @@ class Detector:
         print("starting detect_event")
         if self.current_event_mask is not None:
             self.prev_event_mask = self.current_event_mask
+            print("prev_event_mask updated")
+
         # print(f"thermogram.thermogram shape: {thermogram.thermogram.shape}")
 
         self.current_event_mask = ((
@@ -59,6 +61,9 @@ class Detector:
                 * np.array(list(self.threshold_direction_sign.values()))[:, np.newaxis]
             )
         ))
+        print("current_event_mask calculated")
+
+
         # print(f"self.current_event_mask shape: {self.current_event_mask.shape}")
 
         ranges_mask = create_ranges_mask(thermogram.length, self.ranges)
@@ -66,6 +71,8 @@ class Detector:
 
         self.current_event_mask = self.current_event_mask * ranges_mask
         # print(f"self.current_event_mask shape: {self.current_event_mask.shape}")
+        print("current_event_mask and ranges_mask updated")
+
 
     def get_event_start(self) -> np.ndarray:
         if self.prev_event_mask is None:
