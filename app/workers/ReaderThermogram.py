@@ -3,6 +3,7 @@ import numpy as np
 from pathlib import Path
 from datetime import datetime
 from app.models.thermogram import Thermogram
+from time import sleep
 
 class ReaderThermogram:
     def __init__(self) -> None:
@@ -18,13 +19,16 @@ class ReaderThermogram:
         raise ValueError(f"Line {line_num} not found in file {fname}")
 
     def _get_thermogram(self, fname: Path) -> None:
+        sleep(3)
         df = pd.read_csv(
             fname,
             sep=";",
             names=["L", "T"],
             decimal=".",
-            skiprows=19
+            skiprows=19,
         )
+        print(df["L"].to_numpy().shape)
+        print(df["T"].to_numpy().shape)
         self.length, self.thermogram = df["L"].to_numpy(), df["T"].to_numpy()
 
     def read_data(self, fname: Path) -> Thermogram:

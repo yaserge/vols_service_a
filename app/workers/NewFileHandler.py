@@ -50,8 +50,11 @@ class NewFileHandler(FileSystemEventHandler):
             self.detector.detect_event(thermo)
 
             event_start = self.detector.get_event_start()
+            print("get_event_start")
             event_stop = self.detector.get_event_stop()
+            print("get_event_stop")
             thresholds = self.detector.thresholds
+            print("thresholds")
 
             print("Файл обрабатывается")
 

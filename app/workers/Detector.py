@@ -51,7 +51,7 @@ class Detector:
             self.prev_event_mask = self.current_event_mask
             print("prev_event_mask updated")
 
-        # print(f"thermogram.thermogram shape: {thermogram.thermogram.shape}")
+        print(f"thermogram.thermogram shape: {thermogram.thermogram.shape}")
 
         self.current_event_mask = ((
             (thermogram.thermogram
@@ -77,6 +77,7 @@ class Detector:
     def get_event_start(self) -> np.ndarray:
         if self.prev_event_mask is None:
             return np.array(self.current_event_mask, bool)
+        print(self.current_event_mask.shape, self.prev_event_mask.shape)
 
         return self.current_event_mask > self.prev_event_mask
 
